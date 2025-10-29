@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personality Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #00C4FF, #007BFF);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .quiz-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h2 {
+            color: #007BFF;
+            text-align: center;
+        }
+
+        .trait {
+            margin-bottom: 25px;
+        }
+
+        .trait h3 {
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+
+        .question {
+            margin: 10px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .scale {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .scale label {
+            font-weight: normal;
+            text-align: center;
+            flex: 1;
+        }
+
+        .scale input {
+            margin-top: 5px;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto 0;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="quiz-container">
+        <h2>Personality Quiz</h2>
+        <form id="quizForm">
+            <!-- Openness -->
+            <div class="trait">
+                <h3>Openness</h3>
+                <div class="question">
+                    <label>I enjoy trying new experiences and exploring ideas.</label>
+                    <div class="scale">
+                        <label><input type="radio" name="op1" value="1" required> Strongly Disagree</label>
+                        <label><input type="radio" name="op1" value="2"> Disagree</label>
+                        <label><input type="radio" name="op1" value="3"> Neutral</label>
+                        <label><input type="radio" name="op1" value="4"> Agree</label>
+                        <label><input type="radio" name="op1" value="5"> Strongly Agree</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <label>I am curious about many different things.</label>
+                    <div class="scale">
+                        <label><input type="radio" name="op2" value="1" required> Strongly Disagree</label>
+                        <label><input type="radio" name="op2" value="2"> Disagree</label>
+                        <label><input type="radio" name="op2" value="3"> Neutral</label>
+                        <label><input type="radio" name="op2" value="4"> Agree</label>
+                        <label><input type="radio" name="op2" value="5"> Strongly Agree</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conscientiousness -->
+            <div class="trait">
+                <h3>Conscientiousness</h3>
+                <div class="question">
+                    <label>I am always prepared.</label>
+                    <div class="scale">
+                        <label><input type="radio" name="co1" value="1" required> Strongly Disagree</label>
+                        <label><input type="radio" name="co1" value="2"> Disagree</label>
+                        <label><input type="radio" name="co1" value="3"> Neutral</label>
+                        <label><input type="radio" name="co1" value="4"> Agree</label>
+                        <label><input type="radio" name="co1" value="5"> Strongly Agree</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <label>I pay attention to details.</label>
+                    <div class="scale">
+                        <label><input type="radio" name="co2" value="1" required> Strongly Disagree</label>
+                        <label><input type="radio" name="co2" value="2"> Disagree</label>
+                        <label><input type="radio" name="co2" value="3"> Neutral</label>
+                        <label><input type="radio" name="co2" value="4"> Agree</label>
+                        <label><input type="radio" name="co2" value="5"> Strongly Agree</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extraversion -->
+            <div class="trait">
+                <h3>Extraversion</h3>
+                <div class="question">
+                    <label>I am the life of the party.</label>
+                    <div class="scale">
+                        <label><input type="radio" name="ex1" value="1" required> Strongly Disagree</label>
+                        <label><input type="radio" name="ex1" value="2"> Disagree</label>
+                        <label><input type="radio" name="ex1" value="3"> Neutral</label>
+                        <label><input type="radio" name="ex1" value="4"> Agree</label>
+                        <label><input type="radio" name="ex1" value="5"> Strongly Agree</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <label>I feel comfortable around people.</label>
+                    <div class="scale">
+                        <label><input type="radio" name="ex2" value="1" required> Strongly Disagree</label>
+                        <label><input type="radio" name="ex2" value="2"> Disagree</label>
+                        <label><input type="radio" name="ex2" value="3"> Neutral</label>
+                        <label><input type="radio" name="ex2" value="4"> Agree</label>
+                        <label><input type="radio" name="ex2" value="5"> Strongly Agree</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agreeableness -->
+            <div class="trait">
+                <h3>Agreeableness</h3>
+                <div class="question">
+                    <label>I am interested in people’s feelings.</label>
+                    <div class="scale">
+                        <label><input type="radio" name="ag1" value="1" required> Strongly Disagree</label>
+                        <label><input type="radio" name="ag1" value="2"> Disagree</label>
+                        <label><input type="radio" name="ag1" value="3"> Neutral</label>
+                        <label><input type="radio" name="ag1" value="4"> Agree</label>
+                        <label><input type="radio" name="ag1" value="5"> Strongly Agree</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <label>I make people feel at ease.</label>
+                    <div class="scale">
+                        <label><input type="radio" name="ag2" value="1" required> Strongly Disagree</label>
+                        <label><input type="radio" name="ag2" value="2"> Disagree</label>
+                        <label><input type="radio" name="ag2" value="3"> Neutral</label>
+                        <label><input type="radio" name="ag2" value="4"> Agree</label>
+                        <label><input type="radio" name="ag2" value="5"> Strongly Agree</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Neuroticism -->
+            <div class="trait">
+                <h3>Neuroticism</h3>
+                <div class="question">
+                    <label>I get stressed out easily.</label>
+                    <div class="scale">
+                        <label><input type="radio" name="ne1" value="1" required> Strongly Disagree</label>
+                        <label><input type="radio" name="ne1" value="2"> Disagree</label>
+                        <label><input type="radio" name="ne1" value="3"> Neutral</label>
+                        <label><input type="radio" name="ne1" value="4"> Agree</label>
+                        <label><input type="radio" name="ne1" value="5"> Strongly Agree</label>
+                    </div>
+                </div>
+                <div class="question">
+                    <label>I worry about things.</label>
+                    <div class="scale">
+                        <label><input type="radio" name="ne2" value="1" required> Strongly Disagree</label>
+                        <label><input type="radio" name="ne2" value="2"> Disagree</label>
+                        <label><input type="radio" name="ne2" value="3"> Neutral</label>
+                        <label><input type="radio" name="ne2" value="4"> Agree</label>
+                        <label><input type="radio" name="ne2" value="5"> Strongly Agree</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit">Submit</button>
+            <div class="message" id="message"></div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById("quizForm");
+        const messageBox = document.getElementById("message");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const data = {
+                Openness: (parseInt(form.op1.value) + parseInt(form.op2.value)) / 2,
+                Conscientiousness: (parseInt(form.co1.value) + parseInt(form.co2.value)) / 2,
+                Extraversion: (parseInt(form.ex1.value) + parseInt(form.ex2.value)) / 2,
+                Agreeableness: (parseInt(form.ag1.value) + parseInt(form.ag2.value)) / 2,
+                Neuroticism: (parseInt(form.ne1.value) + parseInt(form.ne2.value)) / 2
+            };
+
+            try {
+                console.log(JSON.stringify(data));
+                const response = await fetch("/personality", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    messageBox.style.color = "green";
+                    messageBox.textContent = "Personality data saved successfully!";
+                } else {
+                    const err = await response.json();
+                    messageBox.style.color = "red";
+                    messageBox.textContent = err.detail || "Submission failed.";
+                }
+            } catch (error) {
+                messageBox.style.color = "red";
+                messageBox.textContent = "Network error.";
+            }
+        });
+    </script>
+</body>
+
+</html>
