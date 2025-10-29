@@ -33,20 +33,35 @@ async def save_personality(request: Request, db: Session = Depends(get_session))
     if not user:
         raise HTTPException(status_code=401, detail="User not found or not logged in")
 
-    personality = Personality(
-        user_id=user.id,
-        Openness=data["Openness"],
-        Conscientiousness=data["Conscientiousness"],
-        Extraversion=data["Extraversion"],
-        Agreeableness=data["Agreeableness"],
-        Neuroticism=data["Neuroticism"],
-    )
+    # Check if a personality record already exists for this user
+    existing = db.exec(
+        select(Personality).where(Personality.user_id == user.id)
+    ).first()
 
-    db.add(personality)
+    if existing:
+        # Update existing record
+        existing.Openness = data["Openness"]
+        existing.Conscientiousness = data["Conscientiousness"]
+        existing.Extraversion = data["Extraversion"]
+        existing.Agreeableness = data["Agreeableness"]
+        existing.Neuroticism = data["Neuroticism"]
+        db.add(existing)
+        message = "Personality updated successfully"
+    else:
+        # Create new record
+        new_personality = Personality(
+            user_id=user.id,
+            Openness=data["Openness"],
+            Conscientiousness=data["Conscientiousness"],
+            Extraversion=data["Extraversion"],
+            Agreeableness=data["Agreeableness"],
+            Neuroticism=data["Neuroticism"],
+        )
+        db.add(new_personality)
+        message = "Personality saved successfully"
+
     db.commit()
-    db.refresh(personality)
-
-    return {"message": "Personality saved", "user_id": user.id}
+    return {"message": message, "user_id": user.id}
 
 
 @app.post("/signup")
