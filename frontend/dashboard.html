@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Inter", sans-serif;
+            background: #f9fafc;
+            display: flex;
+            height: 100vh;
+            color: #111827;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .nav-links button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background: #f3f4f6;
+            border: none;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+
+        .nav-links button:hover {
+            background: #e5e7eb;
+        }
+
+        .emotion-box {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .emotion-box h3 {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .emotions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .emotions label {
+            cursor: pointer;
+            font-size: 1.3rem;
+        }
+
+        .emotion-box button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .main h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .topic-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .topic-card:hover {
+            background: #f3f4f6;
+            transform: translateY(-3px);
+        }
+
+        .topic-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+
+        .topic-card p {
+            font-size: 0.9rem;
+            color: #4b5563;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div>
+            <h2>Dashboard</h2>
+
+            <div class="emotion-box">
+                <h3>How are you feeling right now?</h3>
+                <div class="emotions">
+                    <label><input type="radio" name="emotion" value="sad"> 😞</label>
+                    <label><input type="radio" name="emotion" value="neutral"> 😐</label>
+                    <label><input type="radio" name="emotion" value="happy"> 🙂</label>
+                    <label><input type="radio" name="emotion" value="jubilant"> 😃</label>
+                    <label><input type="radio" name="emotion" value="ecstatic"> 🤩</label>
+                </div>
+                <button onclick="submitEmotion()">Set Mood</button>
+            </div>
+
+            <div class="nav-links" style="margin-top: 20px;">
+                <button onclick="goQuiz()">🧠 Personality Quiz</button>
+                <button onclick="logout()">🚪 Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+        <h1>Available Topics</h1>
+        <div class="topics" id="topic-list">
+            <div class="topic-card" onclick="selectTopic('Introduction to AI')">
+                <h3>Introduction to AI</h3>
+                <p>Understand the fundamentals of artificial intelligence.</p>
+            </div>
+
+            <div class="topic-card" onclick="selectTopic('Machine Learning')">
+                <h3>Machine Learning</h3>
+                <p>Learn about supervised and unsupervised learning.</p>
+            </div>
+
+            <div class="topic-card" onclick="selectTopic('Data Science')">
+                <h3>Data Science</h3>
+                <p>Dive into data analysis, visualization, and insights.</p>
+            </div>
+
+            <div class="topic-card" onclick="selectTopic('Neural Networks')">
+                <h3>Neural Networks</h3>
+                <p>Explore how machines mimic the human brain.</p>
+            </div>
+
+            <div class="topic-card" onclick="selectTopic('Ethics in AI')">
+                <h3>Ethics in AI</h3>
+                <p>Understand the social impact of intelligent systems.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedEmotion = null;
+
+        function submitEmotion() {
+            const emotionInput = document.querySelector('input[name="emotion"]:checked');
+            if (!emotionInput) return alert('Please select how you feel!');
+            selectedEmotion = emotionInput.value;
+            alert('Emotion saved: ' + selectedEmotion);
+        }
+
+        async function selectTopic(topic) {
+            if (!selectedEmotion) return alert('Please select your emotion first!');
+            let user_id = localStorage.getItem("user_id");
+            if (!user_id) user_id = 1;
+            try {
+                const response = await fetch("/generate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ user_id: user_id, topic: topic, emotion: selectedEmotion })
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch learning content");
+                const data = await response.json();
+
+                // Store in localStorage for learning.html
+                localStorage.setItem("learningTopic", topic);
+                localStorage.setItem("learningContent", JSON.stringify(data));
+
+                // Redirect
+                window.location.href = "learning";
+            } catch (err) {
+                alert("Error fetching content: " + err.message);
+            }
+        }
+
+
+        function goQuiz() {
+            window.location.href = "/personality";
+        }
+
+        function logout() {
+            window.location.href = "/login";
+        }
+    </script>
+</body>
+
+</html>

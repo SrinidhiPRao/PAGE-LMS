@@ -3,10 +3,11 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, select
 
-from .models import Personality, User
+from .models import Personality, User, ContentRequest
 from .database import get_session, engine
 from .templates import router as templates_router
-
+from .prompts import build_prompt
+from .generator import generate_content
 
 app = FastAPI()
 
@@ -88,3 +89,34 @@ def login(username: str = Form(...), password: str = Form(...)):
             raise HTTPException(status_code=401, detail="Invalid username or password")
 
         return {"message": "Login successful", "user_id": user.id}
+
+
+@app.post("/generate")
+async def generate_learning_content(request: ContentRequest):
+    # Open DB session
+    with Session(engine) as session:
+        # Fetch user personality
+        statement = select(Personality).where(Personality.user_id == request.user_id)
+        personality = session.exec(statement).first()
+
+        if not personality:
+            raise HTTPException(
+                status_code=404, detail="Personality not found for user"
+            )
+
+        # Convert to text summary (simplified)
+        personality_str = (
+            f"Openness: {personality.Openness}, "
+            f"Conscientiousness: {personality.Conscientiousness}, "
+            f"Extraversion: {personality.Extraversion}, "
+            f"Agreeableness: {personality.Agreeableness}, "
+            f"Neuroticism: {personality.Neuroticism}"
+        )
+
+        # Build prompt
+        prompt = build_prompt(request.topic, personality_str, request.emotion)
+
+        # Generate content (via your LLM / Gemini logic)
+        content = generate_content(prompt)
+
+        return {"topic": request.topic, "content": content}

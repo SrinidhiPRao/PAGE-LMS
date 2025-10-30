@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Field
-
+from pydantic import BaseModel
 
 from sqlmodel import SQLModel, Field, Relationship
 
@@ -21,3 +21,9 @@ class User(SQLModel, table=True):
     password: str
 
     personality: "Personality" = Relationship(back_populates="user")
+
+
+class ContentRequest(BaseModel):
+    user_id: int
+    topic: str
+    emotion: str
