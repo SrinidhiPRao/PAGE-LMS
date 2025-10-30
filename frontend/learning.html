@@ -1,104 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Learning Page</title>
-
-    <style>
-        body {
-            display: flex;
-            font-family: 'Inter', sans-serif;
-            background: #f8fafc;
-            color: #111;
-        }
-
-        aside {
-            width: 220px;
-            background: #fff;
-            border-right: 1px solid #e2e8f0;
-            padding: 1.5rem;
-            height: 100vh;
-        }
-
-        aside h2 {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
-        .nav-btn {
-            display: block;
-            background: #f1f5f9;
-            border: none;
-            padding: 0.6rem 1rem;
-            margin: 0.4rem 0;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            text-align: left;
-            font-size: 0.95rem;
-        }
-
-        .nav-btn:hover {
-            background: #e2e8f0;
-        }
-
-        main {
-            flex-grow: 1;
-            padding: 2rem;
-            overflow-y: auto;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-
-        #contentArea {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            padding: 1.5rem;
-            line-height: 1.6;
-            font-size: 1rem;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Learning Page</title>
+  <style>
+    body {
+      display: flex;
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      margin: 0;
+    }
+    aside {
+      width: 220px;
+      background: #1e293b;
+      border-right: 1px solid #334155;
+      padding: 1.5rem;
+      height: 100vh;
+    }
+    aside h2 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: #e2e8f0;
+    }
+    .nav-btn {
+      display: block;
+      background: #334155;
+      border: none;
+      padding: 0.6rem 1rem;
+      margin: 0.4rem 0;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      font-size: 0.95rem;
+      color: #f8fafc;
+    }
+    .nav-btn:hover {
+      background: #475569;
+    }
+    main {
+      flex-grow: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #f1f5f9;
+    }
+    #contentArea {
+      background: #1e293b;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      padding: 1.5rem;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+    #contentArea h2, #contentArea h3 {
+      color: #e2e8f0;
+    }
+    #contentArea strong {
+      color: dodgerblue;
+    }
+    #contentArea em {
+      color: #93c5fd;
+    }
+    #contentArea ul {
+      padding-left: 1.5rem;
+    }
+  </style>
 </head>
-
 <body>
-    <aside>
-        <h2>Navigation</h2>
-        <button class="nav-btn" onclick="window.location.href='dashboard.html'">🏠 Home</button>
-        <button class="nav-btn" onclick="window.location.href='quiz.html'">🧠 Personality Quiz</button>
-        <button class="nav-btn" onclick="logout()">🚪 Logout</button>
-    </aside>
+  <aside>
+    <h2>Navigation</h2>
+    <button class="nav-btn" onclick="window.location.href='dashboard'">🏠 Home</button>
+    <button class="nav-btn" onclick="window.location.href='personality'">🧠 Personality Quiz</button>
+    <button class="nav-btn" onclick="logout()">🚪 Logout</button>
+  </aside>
 
-    <main>
-        <h1 id="topicTitle">Loading...</h1>
-        <div id="contentArea">Please wait while we load your learning material...</div>
-    </main>
+  <main>
+    <h1 id="topicTitle">Loading...</h1>
+    <div id="contentArea">Please wait while we load your learning material...</div>
+  </main>
 
-    <script>
-        window.onload = () => {
-            const topic = localStorage.getItem("learningTopic");
-            const content = JSON.parse(localStorage.getItem("learningContent"));
+  <!-- ✅ Add the marked.js library for markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-            document.getElementById("topicTitle").textContent = topic || "No Topic Selected";
+  <script>
+    window.onload = () => {
+      const topic = localStorage.getItem("learningTopic");
+      const content = JSON.parse(localStorage.getItem("learningContent"));
+      document.getElementById("topicTitle").textContent = topic || "No Topic Selected";
 
-            // Display content (handles both .text or .content keys)
-            if (content && (content.text || content.content)) {
-                const text = content.text || content.content;
-                document.getElementById("contentArea").innerHTML = `<p>${text}</p>`;
-            } else {
-                document.getElementById("contentArea").textContent = "No learning content found.";
-            }
-        };
+      const contentDiv = document.getElementById("contentArea");
+      if (content && (content.text || content.content)) {
+        const markdownText = content.text || content.content;
+        // Convert Markdown → HTML
+        contentDiv.innerHTML = marked.parse(markdownText);
+      } else {
+        contentDiv.textContent = "No learning content found.";
+      }
+    };
 
-        function logout() {
-            localStorage.clear();
-            window.location.href = "login.html";
-        }
-    </script>
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login";
+    }
+  </script>
 </body>
-
 </html>
