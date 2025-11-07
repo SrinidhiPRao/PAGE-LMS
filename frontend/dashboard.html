@@ -95,6 +95,38 @@
             margin-bottom: 20px;
         }
 
+        /* Search bar */
+        .search-container {
+            margin-bottom: 25px;
+            position: relative;
+            max-width: 400px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 10px 40px 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        .search-container input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-container span {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            color: #6b7280;
+        }
+
         .topics {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -158,6 +190,12 @@
     <!-- Main Content -->
     <div class="main">
         <h1>Available Topics</h1>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for a topic...">
+        </div>
+
         <div class="topics" id="topic-list">
             <div class="topic-card" onclick="selectTopic('Introduction to AI')">
                 <h3>Introduction to AI</h3>
@@ -210,17 +248,13 @@
                 if (!response.ok) throw new Error("Failed to fetch learning content");
                 const data = await response.json();
 
-                // Store in localStorage for learning.html
                 localStorage.setItem("learningTopic", topic);
                 localStorage.setItem("learningContent", JSON.stringify(data));
-
-                // Redirect
                 window.location.href = "learning";
             } catch (err) {
                 alert("Error fetching content: " + err.message);
             }
         }
-
 
         function goQuiz() {
             window.location.href = "/personality";
@@ -229,6 +263,18 @@
         function logout() {
             window.location.href = "/login";
         }
+
+        // Search filter
+        const searchInput = document.getElementById("searchInput");
+        const topicCards = document.querySelectorAll(".topic-card");
+
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.toLowerCase();
+            topicCards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(query) ? "block" : "none";
+            });
+        });
     </script>
 </body>
 
