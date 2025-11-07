@@ -21,11 +21,6 @@ app.add_middleware(
 app.include_router(templates_router)
 
 
-@app.get("/")
-def home():
-    return {"status": "ok"}
-
-
 @app.post("/personality")
 async def save_personality(request: Request, db: Session = Depends(get_session)):
     data = await request.json()
@@ -92,7 +87,7 @@ def login(username: str = Form(...), password: str = Form(...)):
 
 
 @app.post("/generate")
-async def generate_learning_content(request: ContentRequest):
+def generate_learning_content(request: ContentRequest):
     # Open DB session
     with Session(engine) as session:
         # Fetch user personality
